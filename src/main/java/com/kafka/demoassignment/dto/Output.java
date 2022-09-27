@@ -12,4 +12,6 @@ import lombok.ToString;
 public class Output {
     private Subscriber subscriber;
     private Patient patient;
+    private Case mycase;
+    private Service service;
 }

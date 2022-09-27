@@ -1,9 +1,7 @@
 package com.kafka.demoassignment.controller;
 
 
-import com.kafka.demoassignment.dto.Output;
-import com.kafka.demoassignment.dto.Patient;
-import com.kafka.demoassignment.dto.Subscriber;
+import com.kafka.demoassignment.dto.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +27,9 @@ public class KafkaController {
 
             Subscriber subscriber=new Subscriber();
             Patient patient=new Patient();
+            Case myCase=new Case();
+            Service service=new Service();
+
             if(st.startsWith("SUB")){
                 flag=0;
                 subscriber.setCASE_NUMBER(st.substring(3,18));
@@ -42,8 +43,21 @@ public class KafkaController {
                 subscriber.setMEM_PIN(st.substring(131,146));
                 output.setSubscriber(subscriber);
             }
+            if(st.startsWith("CAS")){
+                flag=0;
+                myCase.setCASE_NUMBER(st.substring(3,18));
+                myCase.setCASE_TYPE(st.substring(19,34));
+                myCase.setCASE_CODE(st.substring(35,50));
+                myCase.setCASE_START_DATE(st.substring(51,66));
+                myCase.setCASE_END_DATE(st.substring(67,82));
+                myCase.setCASE_AUTH_TYPE(st.substring(83,98));
+                myCase.setCASE_STATUS(st.substring(99,108));
+                output.setMycase(myCase);
+
+            }
+
             if(st.startsWith("PAT")){
-                flag=1;
+                flag=0;
                 patient.setCASE_NUMBER(st.substring(3,18));
                 patient.setPAT_ID(st.substring(19,34));
                 patient.setPAT_FIRST_NAME(st.substring(35,50));
@@ -54,6 +68,19 @@ public class KafkaController {
                 patient.setPAT_PLANE_TYPE(st.substring(115,130));
                 patient.setPAT_PLAN_NAME(st.substring(131,135));
                 output.setPatient(patient);
+
+            }
+            if(st.startsWith("SVC")){
+                flag=1;
+                service.setCASE_NUMBER(st.substring(3,18));
+                service.setSVC_ID(st.substring(19,34));
+                service.setSVC_TYPE(st.substring(35,50));
+                service.setSVC_CODE(st.substring(51,66));
+                service.setSVC_FAC_ID(st.substring(67,82));
+                service.setSVC_FAC_NAME(st.substring(83,98));
+                service.setSVC_PHY_ID(st.substring(99,114));
+                service.setSVC_PHY_NAME(st.substring(115,130));
+                output.setService(service);
 
             }
             if(flag==1){
